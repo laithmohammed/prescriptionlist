@@ -59,11 +59,11 @@ class Container extends React.Component {
     }
     // get all drugs name from drugname.json file and push it into Drugs state
     getDrugsNameFromFile(){
-        const DataFile  = require('./drugname.json');
+        const DataFile  = require('./drugname.json');  //file size 4MB nearly and content nealy 50 thousand drug names
         let DragName    = []
         let UnqDrugName = []
         let xName;
-        DataFile.map((index)=>{ DragName.push(index.brand_name.toLowerCase()); });
+        DataFile.map((index)=>{ DragName.push(index.brand_name.toLowerCase()); }); //push all drug names
         //check if there are doplicate name
         DragName.map((index)=>{ xName = UnqDrugName.indexOf(index);if(xName == -1){ UnqDrugName.push(index); } });
         this.state.Drugs = UnqDrugName;
@@ -142,8 +142,8 @@ class Container extends React.Component {
                 <React.Fragment>
                     <Contain>
                         <Div>
-                            <Input type="text" placeholder="Case Full name Ex: Johne Doe Loram" onKeyUp={(event)=>{this.setNameCase(event.target.value)}} defaultValue={this.state.NewPrespAge}/><br/>
-                            <Input type="number" placeholder="Case Age Ex: 26" onKeyUp={(event)=>{this.setAgeCase(event.target.value)}} defaultValue={this.state.NewPrespAge}/>
+                            <Input type="text" placeholder="Case Full name Ex: Johne Doe Loram" onKeyUp={(event)=>{this.setNameCase(event.target.value)}} defaultValue={this.state.NewPrespName}/><br/>
+                            <Input type="number" placeholder="Case Age Ex: 26" onKeyUp={(event)=>{this.setAgeCase(event.target.value)}} onChange={(event)=>{this.setAgeCase(event.target.value)}} defaultValue={this.state.NewPrespAge}/>
                             <Autocomplete title="drug" items={this.state.Drugs} onChange={(changedItem)=>{ this.setDefaultDrug(changedItem); }} >
                                     {(props) => {
                                         const { getInputProps, getRef, inputValue } = props

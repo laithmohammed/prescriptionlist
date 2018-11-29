@@ -55,8 +55,10 @@ class Container1 extends React.Component{
             const PDFData = document.getElementById('pdfDemo');
             html2canvas(PDFData).then((canvas) => {
                 const imgData = canvas.toDataURL('image/png');
-                const pdf = new jsPDF();
-                pdf.addImage(imgData, 'JPEG', 0, 0);
+                const pdf = new jsPDF("p", "mm", "a4");
+                let width = pdf.internal.pageSize.getWidth();
+                let height = pdf.internal.pageSize.getHeight();
+                pdf.addImage(imgData, 'JPEG', 0, 0, width, height);
                 pdf.save(filename + ".pdf");
             });
         }

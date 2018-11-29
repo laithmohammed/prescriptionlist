@@ -27,8 +27,21 @@ class App extends React.Component {
     constructor(){
         super();
         this.state = {
+            Drugs : [],
             UI    : "ListPrescription",           
         };
+        this.getDrugsNameFromFile();
+    }
+    // get all drugs name from drugname.json file and push it into Drugs state
+    getDrugsNameFromFile(){
+        const DataFile  = require('./drugname.json');  //file size 4MB nearly and content nealy 50 thousand drug names
+        let DragName    = []
+        let UnqDrugName = []
+        let xName;
+        DataFile.map((index)=>{ DragName.push(index.brand_name.toLowerCase()); }); //push all drug names
+        //check if there are doplicate name
+        DragName.map((index)=>{ xName = UnqDrugName.indexOf(index);if(xName == -1){ UnqDrugName.push(index); } });
+        this.state.Drugs = UnqDrugName;
     }
     // update UI when click on header button
     setUI(loc){

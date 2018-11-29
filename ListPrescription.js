@@ -35,7 +35,7 @@ class Container1 extends React.Component{
                 FireBase.push(Obj);
             })
             this.setState({ Data : FireBase });
-            console.log(this.state.Data);
+            // console.log(this.state.Data);
         });
     }
     // print or view certain prescription for target case

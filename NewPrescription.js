@@ -31,12 +31,12 @@ class Container extends React.Component {
     constructor(){
         super();
         this.state = {
-            Drugs        : [],
             NewPrespName : "",
             NewPrespDate : "",
             NewPrespAge  : "",
             DefaultSpace : "",
             NewPrespData : [],
+            SaveAction   : "",
             inputStyle : {
                 fontSize:"1em", padding:"12px 22px",borderRadius:"40px",border:"2px solid #2c509a",
                 fontFamily: "'Lora', serif", fontWeight:"bold", backgroundColor:"#fff", color:"#000",
@@ -46,7 +46,6 @@ class Container extends React.Component {
                 marginTop:"-49px",position:"absolute",right:"-56px",borderRadius:"25px",border:"2px solid #2c509a"
             }
         }
-        this.getDrugsNameFromFile();
     }
     // update Case name when the client keyup at name input field
     setNameCase(name){
@@ -56,17 +55,6 @@ class Container extends React.Component {
     // update Case age when the client keyup at age input field
     setAgeCase(age){
         this.setState({ NewPrespAge : age })
-    }
-    // get all drugs name from drugname.json file and push it into Drugs state
-    getDrugsNameFromFile(){
-        const DataFile  = require('./drugname.json');  //file size 4MB nearly and content nealy 50 thousand drug names
-        let DragName    = []
-        let UnqDrugName = []
-        let xName;
-        DataFile.map((index)=>{ DragName.push(index.brand_name.toLowerCase()); }); //push all drug names
-        //check if there are doplicate name
-        DragName.map((index)=>{ xName = UnqDrugName.indexOf(index);if(xName == -1){ UnqDrugName.push(index); } });
-        this.state.Drugs = UnqDrugName;
     }
     // update drug name when the client keyup at drug input field before add it
     setDefaultDrug(drug){
@@ -128,8 +116,9 @@ class Container extends React.Component {
                 NewPrespAge  : "",
                 NewPrespDate : "",
                 NewPrespData : [],
-                DefaultSpace : ""
-            })
+                DefaultSpace : "",
+            });
+            this.state.SaveAction = "Done";
         }else{
             alert("your new prescription is not saved, check you inserted data !!")
         }
@@ -144,7 +133,7 @@ class Container extends React.Component {
                         <Div>
                             <Input type="text" placeholder="Case Full name Ex: Johne Doe Loram" onKeyUp={(event)=>{this.setNameCase(event.target.value)}} defaultValue={this.state.NewPrespName}/><br/>
                             <Input type="number" placeholder="Case Age Ex: 26" onKeyUp={(event)=>{this.setAgeCase(event.target.value)}} onChange={(event)=>{this.setAgeCase(event.target.value)}} defaultValue={this.state.NewPrespAge}/>
-                            <Autocomplete title="drug" items={this.state.Drugs} onChange={(changedItem)=>{ this.setDefaultDrug(changedItem); }} >
+                            <Autocomplete title="drug" items={app.state.Drugs} onChange={(changedItem)=>{ this.setDefaultDrug(changedItem); }} >
                                     {(props) => {
                                         const { getInputProps, getRef, inputValue } = props
                                         return ( <TextInput placeholder="Type a drug name Ex: Paracetamol" value={inputValue} innerRef={getRef} {...getInputProps()} style={this.state.inputStyle} id="DrugName"/> )
@@ -174,7 +163,7 @@ class Container extends React.Component {
                         </tbody></Table>
                     </Contain1>
                     <Contain2>
-                    `   <Button onClick={(event)=>{this.saveNewPresp(event),app.action.setUIFun("ListPrescription")}}>save</Button>
+                    `   <Button onClick={(event)=>{this.saveNewPresp(event);if(this.state.SaveAction == "Done"){app.action.setUIFun("ListPrescription")}}}>save</Button>
                     </Contain2>
                 </React.Fragment>)
             }}</Bulk.Consumer>
